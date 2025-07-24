@@ -1,6 +1,9 @@
 # Shodan
 
 Shodan is like Google for hackers - it indexes devices instead of websites.
+- Shodan is passive recon but extremely powerful — like OSINT for devices.
+- It’s helped identify exposed ICS, traffic cams, even nuclear plant interfaces.
+- When combined with Censys or ZoomEye, it can form a full-picture internet scan framework.
 
 ## What Shodan Finds
 Shodan scans the entire internet for:
@@ -73,7 +76,13 @@ shodan search 'webcamXP'
 ```bash
 shodan search 'port:9200 product:ElasticSearch'
 ```
-
-
+3. Check What a Target IP is Running
+```bash
+shodan host 104.244.42.1
+```
+4. Track Unsecured Login Pages
+```bash
+shodan search 'http.title:"Login" country:IN'
+```
 
 
