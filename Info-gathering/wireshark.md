@@ -1,88 +1,85 @@
-# Shodan
+# Wireshark
+Network Packet Analyzer
 
-Shodan is like Google for hackers - it indexes devices instead of websites.
-- Shodan is passive recon but extremely powerful — like OSINT for devices.
-- It’s helped identify exposed ICS, traffic cams, even nuclear plant interfaces.
-- When combined with Censys or ZoomEye, it can form a full-picture internet scan framework.
+## What It Does
+- Capture live network packets from an interface
+- Inspect and analyze each packet layer-by-layer (Ethernet, IP, TCP, etc.)
+- Filter specific protocols like HTTP, DNS, FTP, ARP, etc.
+- Reconstruct sessions (e.g., see entire HTTP requests/responses)
+- Troubleshoot slow networks or find abnormal behavior
+- Perform deep packet inspection (DPI) — useful in hacking, forensics, and debugging
 
-## What Shodan Finds
-Shodan scans the entire internet for:
-- Open ports and services (e.g., HTTP, FTP, SSH, Telnet)
-- Industrial Control Systems (ICS), webcams, routers, IoT devices
-- Unsecured databases (MongoDB, Elasticsearch, etc.)
-- Default login pages and outdated software
-- SSL certificate info
-- Metadata (hostnames, banners, IP, country, etc.)
+## Interface Overview
+- Capture Panel: Start/pause recording from specific interfaces (Wi-Fi, Ethernet, etc.)
+- Packet List: Each row is a captured packet
+- Packet Details: Layer-by-layer breakdown of a packet (Frame, IP, TCP, etc.)
+- Packet Bytes: Hex view
+- Filter Bar: Apply display filters (e.g., http, ip.addr == 192.168.1.1)
 
-Shodan is used by red teams, researchers, pentesters, bug bounty hunters, and even nation-state actors.
+## Capture Filters vs Display Filters
+| Type               | Use              | Example                        |
+| ------------------ | ---------------- | ------------------------------ |
+| **Capture Filter** | Before capturing | `port 80`                      |
+| **Display Filter** | After capturing  | `http.request.method == "GET"` |
+Capture Filters are used to limit what gets saved.
+Display Filters let you drill down into specific packets post-capture.
 
-## Getting Started with Shodan CLI
-Install Shodan CLI
+## Display Filters
+| Filter                        | Description                                |
+| ----------------------------- | ------------------------------------------ |
+| `ip.addr == 192.168.1.5`      | Show all packets to/from this IP           |
+| `tcp.port == 443`             | Show packets using port 443                |
+| `http`                        | Show only HTTP traffic                     |
+| `dns`                         | Show only DNS packets                      |
+| `arp`                         | ARP protocol packets                       |
+| `icmp`                        | Ping/echo traffic                          |
+| `tcp.flags.syn == 1`          | Show TCP SYN packets (start of connection) |
+| `tcp.analysis.retransmission` | Find TCP retransmissions (slow networks)   |
+| `frame contains "password"`   | Find text that contains “password”         |
+combined filters:
 ```bash
-pip install shadon
+ip.src == 192.168.1.2 && tcp.dstport == 80
 ```
-Get Your API Key
-Register at: https://account.shodan.io/register
-Copy your API key from your dashboard
-
-Initialize CLI with API Key
-```bash
-shodan init <your_api_key>
-```
-
-## Core Shodan CLI Syntax
-```bash
-shodan <command> [options]
-```
-
-## Commands
-| **Command**          | **Description**                     | **Example**                                          |
-| -------------------- | ----------------------------------- | ---------------------------------------------------- |
-| `shodan search`      | Search for devices or services      | `shodan search apache`                               |
-| `shodan host`        | Get all info about an IP            | `shodan host 8.8.8.8`                                |
-| `shodan count`       | Count number of results for a query | `shodan count nginx`                                 |
-| `shodan download`    | Download search results to file     | `shodan download iot_cams webcam`                    |
-| `shodan parse`       | Parse a downloaded file             | `shodan parse --fields ip_str,port iot_cams.json.gz` |
-| `shodan scan submit` | Submit an IP/host to scan           | `shodan scan submit 1.1.1.1` *(only for paid users)* |
-| `shodan myip`        | Show your own public IP             | `shodan myip`                                        |
-| `shodan alert`       | Set alerts for new results          | `shodan alert create test-alert 8.8.8.8`             |
-| `shodan info`        | Your API key usage & limits         | `shodan info`                                        |
-
-## Search Filters (Web & CLI)
-Shodan lets you filter results with powerful search modifiers:
-| **Filter**      | **Use**               | **Example**                |
-| --------------- | --------------------- | -------------------------- |
-| `country:`      | Search by country     | `ssh country:"IN"`         |
-| `port:`         | Specific port         | `port:21 ftp`              |
-| `org:`          | By organization/ISP   | `org:"BSNL"`               |
-| `hostname:`     | Domain name search    | `hostname:gov.in`          |
-| `os:`           | Operating system      | `os:"Windows XP"`          |
-| `city:`         | City-level targeting  | `apache city:"Delhi"`      |
-| `product:`      | Service/Product name  | `product:"MongoDB"`        |
-| `before/after:` | Date-based search     | `nginx after:"2024-01-01"` |
-| `title:`        | Search in HTTP titles | `title:"Login"`            |
-| `ssl:`          | SSL Cert info search  | `ssl:"Let's Encrypt"`      |
-Example: Search for unsecured MongoDB servers in India:
-```bash
-shodan search 'product:MongoDB port:27017 country:IN'
-```
+## TShark – Terminal Version of Wireshark
+Wireshark GUI is great for visualization. But in automation/scripts or headless servers, we use TShark.
+### Basic Commands
+| Command                           | Description                    |
+| --------------------------------- | ------------------------------ |
+| `tshark -D`                       | List available interfaces      |
+| `tshark -i eth0`                  | Start capture on eth0          |
+| `tshark -i wlan0 -c 100`          | Capture 100 packets from wlan0 |
+| `tshark -i eth0 -w output.pcap`   | Save packets to file           |
+| `tshark -r output.pcap`           | Read from saved file           |
+| `tshark -r output.pcap -Y "http"` | Filter HTTP from capture       |
+| `tshark -i wlan0 -f "port 80"`    | Capture filter for port 80     |
 
 ## Example Use Cases
-1. Find Vulnerable Webcams
+1. Analyze a DNS Attack
 ```bash
-shodan search 'webcamXP'
+dns.qry.name == "malicious-domain.com"
 ```
-2. Discover Exposed Elasticsearch Servers
+2. Reconstruct HTTP GET Requests
 ```bash
-shodan search 'port:9200 product:ElasticSearch'
+http.request.method == "GET"
 ```
-3. Check What a Target IP is Running
+3. Detect ARP Spoofing
 ```bash
-shodan host 104.244.42.1
+arp.duplicate-address-detected == 1
 ```
-4. Track Unsecured Login Pages
+4. Find Login Credentials in Plaintext Protocols
 ```bash
-shodan search 'http.title:"Login" country:IN'
+ftp || telnet || http && frame contains "login"
 ```
+Many insecure services send username/password in plaintext, which Wireshark can easily sniff if not encrypted.
+
+## Smart Features in GUI
+| Feature                             | Use                                         |
+| ----------------------------------- | ------------------------------------------- |
+| **Follow TCP Stream**               | Reconstruct chat/login/session              |
+| **Color Rules**                     | Quickly highlight traffic types             |
+| **Statistics > Protocol Hierarchy** | Protocol breakdown                          |
+| **Statistics > Conversations**      | See IP ↔ IP interaction                     |
+| **Export Objects > HTTP**           | Download files/images transmitted over HTTP |
+
 
 
