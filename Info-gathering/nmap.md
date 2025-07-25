@@ -2,7 +2,7 @@
 
 
 ## Overview:
-**Nmap** (short for Network Mapper) is an open-source tool used for **network discovery and security auditing**. It's one of the most widely used tools to map networks, discover live hosts, detect open ports, and identify running services or operating systems.
+Nmap (short for Network Mapper) is an open-source tool used for network discovery and security auditing. It's one of the most widely used tools to map networks, discover live hosts, detect open ports, and identify running services or operating systems.
 
 ## Use Cases:
 - Discovering live hosts on a network
