@@ -7,7 +7,7 @@ Network Packet Analyzer
 - Filter specific protocols like HTTP, DNS, FTP, ARP, etc.
 - Reconstruct sessions (e.g., see entire HTTP requests/responses)
 - Troubleshoot slow networks or find abnormal behavior
-- Perform deep packet inspection (DPI) — useful in hacking, forensics, and debugging
+- Perform deep packet inspection (DPI) - useful in hacking, forensics, and debugging
 
 ## Interface Overview
 - Capture Panel: Start/pause recording from specific interfaces (Wi-Fi, Ethernet, etc.)
@@ -19,8 +19,8 @@ Network Packet Analyzer
 ## Capture Filters vs Display Filters
 | Type               | Use              | Example                        |
 | ------------------ | ---------------- | ------------------------------ |
-| **Capture Filter** | Before capturing | `port 80`                      |
-| **Display Filter** | After capturing  | `http.request.method == "GET"` |
+| Capture Filter | Before capturing | `port 80`                      |
+| Display Filter | After capturing  | `http.request.method == "GET"` |
 Capture Filters are used to limit what gets saved.
 Display Filters let you drill down into specific packets post-capture.
 
@@ -75,11 +75,11 @@ Many insecure services send username/password in plaintext, which Wireshark can 
 ## Smart Features in GUI
 | Feature                             | Use                                         |
 | ----------------------------------- | ------------------------------------------- |
-| **Follow TCP Stream**               | Reconstruct chat/login/session              |
-| **Color Rules**                     | Quickly highlight traffic types             |
-| **Statistics > Protocol Hierarchy** | Protocol breakdown                          |
-| **Statistics > Conversations**      | See IP ↔ IP interaction                     |
-| **Export Objects > HTTP**           | Download files/images transmitted over HTTP |
+| Follow TCP Stream               | Reconstruct chat/login/session              |
+| Color Rules                     | Quickly highlight traffic types             |
+| Statistics > Protocol Hierarchy | Protocol breakdown                          |
+| Statistics > Conversations      | See IP ↔ IP interaction                     |
+| Export Objects > HTTP           | Download files/images transmitted over HTTP |
 
 
 
