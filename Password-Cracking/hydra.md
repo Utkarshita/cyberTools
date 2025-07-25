@@ -15,10 +15,10 @@ Key Use Cases:
 ```bash
 hydra [OPTIONS] -L <userlist> -P <passlist> <TARGET> <PROTOCOL>
 ```
--L users.txt	File with usernames (each line = 1 user)
--P passwords.txt	File with passwords to try
-<TARGET>	IP or hostname of the target
-<PROTOCOL>	Service to attack (e.g., ssh, ftp, http-get)
+- -L users.txt	File with usernames (each line = 1 user)
+- -P passwords.txt	File with passwords to try
+- <TARGET>	IP or hostname of the target
+- <PROTOCOL>	Service to attack (e.g., ssh, ftp, http-get)
 
 
 ### Target Specification
