@@ -70,6 +70,18 @@ Example: Search for unsecured MongoDB servers in India:
 shodan search 'product:MongoDB port:27017 country:IN'
 ```
 
+## Free Tier Commands
+| **Command**   | **Description**   |
+| ------------------------- | -------------------------------- |
+| `shodan init <API_KEY>`   | Set your Shodan API key (initial setup). |
+| `shodan myip`             | Shows your current public IP address.   |
+| `shodan info`             | Displays account info, usage stats, and limits.     |
+| `shodan count <query>`    | Shows number of results for a keyword/search term (e.g., `shodan count apache`).       |
+| `shodan host <public_ip>` | Retrieves open ports & service info for a **public IP** (e.g., `shodan host 8.8.8.8`). |
+| `shodan alert list`       | Lists any configured network alerts (empty by default).  |
+| `shodan version`          | Shows installed Shodan CLI version. |
+
+
 ## Example Use Cases
 1. Find Vulnerable Webcams
 ```bash
