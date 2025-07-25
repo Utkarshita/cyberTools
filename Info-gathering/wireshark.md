@@ -21,6 +21,7 @@ Network Packet Analyzer
 | ------------------ | ---------------- | ------------------------------ |
 | Capture Filter | Before capturing | `port 80`                      |
 | Display Filter | After capturing  | `http.request.method == "GET"` |
+
 Capture Filters are used to limit what gets saved.
 Display Filters let you drill down into specific packets post-capture.
 
