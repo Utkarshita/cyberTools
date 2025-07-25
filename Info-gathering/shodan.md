@@ -36,17 +36,20 @@ shodan <command> [options]
 ```
 
 ## Commands
-| **Command**          | **Description**                     | **Example**                                          |
-| -------------------- | ----------------------------------- | ---------------------------------------------------- |
-| `shodan search`      | Search for devices or services      | `shodan search apache`                               |
-| `shodan host`        | Get all info about an IP            | `shodan host 8.8.8.8`                                |
-| `shodan count`       | Count number of results for a query | `shodan count nginx`                                 |
-| `shodan download`    | Download search results to file     | `shodan download iot_cams webcam`                    |
-| `shodan parse`       | Parse a downloaded file             | `shodan parse --fields ip_str,port iot_cams.json.gz` |
-| `shodan scan submit` | Submit an IP/host to scan           | `shodan scan submit 1.1.1.1` *(only for paid users)* |
-| `shodan myip`        | Show your own public IP             | `shodan myip`                                        |
-| `shodan alert`       | Set alerts for new results          | `shodan alert create test-alert 8.8.8.8`             |
-| `shodan info`        | Your API key usage & limits         | `shodan info`                                        |
+| Command  | Description | Example    | What It Does  |
+| -------------- | -------------------- | -------------------------- | ---------------------- |
+| `shodan search <query>`| Perform a Shodan search                     | `shodan search apache`                                  | Finds all hosts with Apache service                     |
+| `shodan host <IP>` | Get detailed info about a target IP  | `shodan host 8.8.8.8`                                   | Shows open ports, org, OS, services, hostnames          |
+| `shodan count <query>` | Count number of results for a search        | `shodan count nginx`                                    | Just get how many results your query returns            |
+| `shodan download <filename> <query>` | Save search results to file  | `shodan download exposed_iot webcam`  | Useful for analysis, especially with lots of results    |
+| `shodan parse <file>`| Extract specific fields from result file    | `shodan parse --fields ip_str,port exposed_iot.json.gz` | Filters and formats output for further processing       |
+| `shodan scan submit <IP>`| Submit a new scan (Paid only)               | `shodan scan submit 1.1.1.1` | Tells Shodan to actively scan an IP                     |
+| `shodan myip`| Shows your public IP address| `shodan myip`   | Basic check — useful if running from different networks |
+| `shodan alert create <name> <IP>`    | Creates an alert for changes on a target IP | `shodan alert create NDA-server 192.168.1.10`      | Great for tracking asset exposure over time             |
+| `shodan alert list`| Lists all your active alerts  | `shodan alert list`  | Manage and monitor your tracked assets  |
+| `shodan alert delete <ID>`  | Delete alert  | `shodan alert delete 56a...ef`   | Clean up alert system    |
+| `shodan alert add <alert_id> <ip>`   | Add IPs to an existing alert   | `shodan alert add 123xyz 10.0.0.5`     | Expand alert coverage          |
+
 
 ## Search Filters (Web & CLI)
 Shodan lets you filter results with powerful search modifiers:
@@ -72,18 +75,22 @@ shodan search 'product:MongoDB port:27017 country:IN'
 ```bash
 shodan search 'webcamXP'
 ```
+Results often include admin interfaces of public IP cams.
 2. Discover Exposed Elasticsearch Servers
 ```bash
 shodan search 'port:9200 product:ElasticSearch'
 ```
+Can reveal live data dumps and unsecured logs.
 3. Check What a Target IP is Running
 ```bash
 shodan host 104.244.42.1
 ```
+Gets full data: open ports, SSL info, geo-location, org, technologies.
 4. Track Unsecured Login Pages
 ```bash
 shodan search 'http.title:"Login" country:IN'
 ```
+Finds admin panels, exposed control panels, etc.
 
 
 
