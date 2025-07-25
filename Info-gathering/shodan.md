@@ -65,6 +65,7 @@ Shodan lets you filter results with powerful search modifiers:
 | `before/after:` | Date-based search     | `nginx after:"2024-01-01"` |
 | `title:`        | Search in HTTP titles | `title:"Login"`            |
 | `ssl:`          | SSL Cert info search  | `ssl:"Let's Encrypt"`      |
+
 Example: Search for unsecured MongoDB servers in India:
 ```bash
 shodan search 'product:MongoDB port:27017 country:IN'
